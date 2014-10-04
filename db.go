@@ -26,6 +26,10 @@ const listTablesSql = `
     ORDER BY table_name;
 `
 
+const inserSql = `
+  INSERT into food VALUES ($1, $2)
+`
+
 func pingDB() {
 	err = db.Ping()
 	if err != nil {
@@ -74,6 +78,24 @@ func listTables() {
 func main() {
 	openDB()
 	defer db.Close()
+func insertTestData() {
+	testData := map[string]int{
+		"pacal":    550,
+		"pancake":  400,
+		"tortilla": 1400,
+		"pizza":    1200,
+	}
+
+	insertStmt, err := db.Prepare(inserSql)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for food, price := range testData {
+		insertStmt.Exec(food, price)
+	}
+}
+
 func createFoodTableIfNotExists() {
 	schema, table := "public", "food"
 	tables, err := getTables(schema)
