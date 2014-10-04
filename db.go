@@ -14,7 +14,7 @@ func main() {
 
 	dbUrl := os.Getenv("DBURL")
 	if dbUrl == "" {
-		panic("Please set the DBURL env variable: postgres://user:pwd@host/dbname")
+		panic("Please set the DBURL env variable: postgres://user:pwd@host/dbname?sslmode=disable")
 	}
 
 	db, err := sql.Open("postgres", dbUrl)

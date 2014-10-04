@@ -10,7 +10,7 @@ docker run --name gofood-psql -d postgres
 ## DB url
 
 ```
-export DBURL="postgres://postgres:@$(docker inspect -f "{{.NetworkSettings.IPAddress}}" gofood-psql)/postgres"
+export DBURL="postgres://postgres:@$(docker inspect -f "{{.NetworkSettings.IPAddress}}" gofood-psql)/postgres?sslmode=disable"
 ```
 
 ## psql in cli
