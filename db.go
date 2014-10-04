@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"os"
 
 	_ "github.com/lib/pq"
 )
@@ -11,7 +12,12 @@ import (
 func main() {
 	fmt.Println("db ..")
 
-	db, err := sql.Open("postgres", "postgres://postgres:@172.19.0.2/postgres")
+	dbUrl := os.Getenv("DBURL")
+	if dbUrl == "" {
+		panic("Please set the DBURL env variable: postgres://user:pwd@host/dbname")
+	}
+
+	db, err := sql.Open("postgres", dbUrl)
 	if err != nil {
 		log.Fatal(err)
 	}
