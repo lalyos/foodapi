@@ -68,6 +68,11 @@ func main() {
 	openDB()
 	defer db.Close()
 
+func init() {
+	log.SetFlags(log.Ltime)
+	log.SetPrefix("[INFO] ")
+}
+
 	pingDB()
 	listTables()
 }
