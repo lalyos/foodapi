@@ -17,3 +17,8 @@ export DBURL="postgres://postgres:@$(docker inspect -f "{{.NetworkSettings.IPAdd
 ```
 psql -h $(docker inspect -f "{{.NetworkSettings.IPAddress}}" gofood-psql) -U postgres
 ```
+## create TABLE
+
+```
+psql -h $(docker inspect -f "{{.NetworkSettings.IPAddress}}" gofood-psql) -U postgres -f food.sql
+```
