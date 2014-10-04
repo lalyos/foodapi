@@ -31,20 +31,19 @@ func openDB() {
 	}
 }
 
-func listTables() {
+func getTables(schema string) ([]string, error) {
+	tables := []string{}
 
-	log.Println("[tables]")
-	schema := "public"
 	listTables := `
-	SELECT table_name
-    FROM information_schema.tables
-		WHERE table_schema=$1
-		ORDER BY table_name;
-	`
+SELECT table_name
+  FROM information_schema.tables
+  WHERE table_schema=$1
+  ORDER BY table_name;
+`
 
 	rows, err := db.Query(listTables, schema)
 	if err != nil {
-		log.Fatal(err)
+		return tables, err
 	}
 	var table string
 	for rows.Next() {
@@ -52,8 +51,17 @@ func listTables() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println(table)
+		tables = append(tables, table)
 	}
+	return tables, nil
+}
+
+func listTables() {
+	tables, err := getTables("public")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("tables:", tables)
 }
 
 func main() {
