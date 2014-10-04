@@ -12,6 +12,13 @@ import (
 var db *sql.DB
 var err error
 
+const listTablesSql = `
+  SELECT table_name
+    FROM information_schema.tables
+    WHERE table_schema=$1
+    ORDER BY table_name;
+`
+
 func pingDB() {
 	err = db.Ping()
 	if err != nil {
@@ -31,17 +38,10 @@ func openDB() {
 	}
 }
 
-func getTables(schema string) ([]string, error) {
-	tables := []string{}
+func getTables(schema string) (map[string]bool, error) {
+	tables := map[string]bool{}
 
-	listTables := `
-SELECT table_name
-  FROM information_schema.tables
-  WHERE table_schema=$1
-  ORDER BY table_name;
-`
-
-	rows, err := db.Query(listTables, schema)
+	rows, err := db.Query(listTablesSql, schema)
 	if err != nil {
 		return tables, err
 	}
@@ -51,7 +51,7 @@ SELECT table_name
 		if err != nil {
 			log.Fatal(err)
 		}
-		tables = append(tables, table)
+		tables[table] = true
 	}
 	return tables, nil
 }
