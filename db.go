@@ -12,6 +12,13 @@ import (
 var db *sql.DB
 var err error
 
+const createTableSql = `
+  CREATE TABLE food (
+    name       varchar(40) NOT NULL,
+    price         integer NOT NULL
+  );
+`
+
 const listTablesSql = `
   SELECT table_name
     FROM information_schema.tables
@@ -67,6 +74,27 @@ func listTables() {
 func main() {
 	openDB()
 	defer db.Close()
+func createFoodTableIfNotExists() {
+	schema, table := "public", "food"
+	tables, err := getTables(schema)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if _, exists := tables[table]; exists {
+		log.Println("table already exists:", table)
+
+	} else {
+		log.Println("missing table:", table)
+		_, err := db.Exec(createTableSql)
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Println("create table SUCCESS:", table)
+		log.Println("inserting test data ...")
+		insertTestData()
+	}
+}
 
 func init() {
 	log.SetFlags(log.Ltime)
