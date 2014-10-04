@@ -75,9 +75,6 @@ func listTables() {
 	fmt.Println("tables:", tables)
 }
 
-func main() {
-	openDB()
-	defer db.Close()
 func insertTestData() {
 	testData := map[string]int{
 		"pacal":    550,
@@ -123,6 +120,13 @@ func init() {
 	log.SetPrefix("[INFO] ")
 }
 
+func initDb() {
+	openDB()
 	pingDB()
-	listTables()
+	createFoodTableIfNotExists()
+}
+
+func main() {
+	initDb()
+	defer db.Close()
 }
