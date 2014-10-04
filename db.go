@@ -1,4 +1,4 @@
-package main
+package gofood
 
 import (
 	"database/sql"
@@ -11,11 +11,13 @@ import (
 
 var db *sql.DB
 var err error
+var hostname string
 
+const version = "1.0"
 const createTableSql = `
   CREATE TABLE food (
-    name       varchar(40) NOT NULL,
-    price         integer NOT NULL
+    name    varchar(40) NOT NULL,
+    price       integer NOT NULL
   );
 `
 
@@ -26,9 +28,8 @@ const listTablesSql = `
     ORDER BY table_name;
 `
 
-const inserSql = `
-  INSERT into food VALUES ($1, $2)
-`
+const inserSql = "INSERT into food VALUES ($1, $2)"
+const listFoodSql = "SELECT * from food;"
 
 func pingDB() {
 	err = db.Ping()
@@ -53,6 +54,7 @@ func getTables(schema string) (map[string]bool, error) {
 	tables := map[string]bool{}
 
 	rows, err := db.Query(listTablesSql, schema)
+	defer rows.Close()
 	if err != nil {
 		return tables, err
 	}
@@ -93,6 +95,35 @@ func insertTestData() {
 	}
 }
 
+func GetAllFoodList() []Food {
+	foodList := []Food{}
+	for _, f := range GetAllFoodMap() {
+		foodList = append(foodList, f)
+	}
+	return foodList
+}
+
+func GetAllFoodMap() map[string]Food {
+	foodMap := map[string]Food{}
+
+	rows, err := db.Query(listFoodSql)
+	defer rows.Close()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for rows.Next() {
+		f := Food{}
+		err := rows.Scan(&f.Name, &f.Price)
+		if err != nil {
+			log.Fatal(err)
+		}
+		foodMap[f.Name] = f
+	}
+
+	return foodMap
+}
+
 func createFoodTableIfNotExists() {
 	schema, table := "public", "food"
 	tables, err := getTables(schema)
@@ -118,15 +149,11 @@ func createFoodTableIfNotExists() {
 func init() {
 	log.SetFlags(log.Ltime)
 	log.SetPrefix("[INFO] ")
+	hostname, _ = os.Hostname()
 }
 
-func initDb() {
+func InitDb() {
 	openDB()
 	pingDB()
 	createFoodTableIfNotExists()
-}
-
-func main() {
-	initDb()
-	defer db.Close()
 }
