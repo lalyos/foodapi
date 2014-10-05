@@ -9,9 +9,12 @@ import (
 	_ "github.com/lib/pq"
 )
 
-var db *sql.DB
 var err error
 var hostname string
+
+type FoodDB struct {
+	db *sql.DB
+}
 
 const version = "1.0"
 const createTableSql = `
@@ -31,29 +34,29 @@ const listTablesSql = `
 const inserSql = "INSERT into food VALUES ($1, $2)"
 const listFoodSql = "SELECT * from food;"
 
-func pingDB() {
-	err = db.Ping()
+func (f FoodDB) pingDB() {
+	err = f.db.Ping()
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-func openDB() {
+func (f *FoodDB) openDB() {
 	dbUrl := os.Getenv("DBURL")
 	if dbUrl == "" {
 		panic("Please set the DBURL env variable: postgres://user:pwd@host/dbname?sslmode=disable")
 	}
 
-	db, err = sql.Open("postgres", dbUrl)
+	f.db, err = sql.Open("postgres", dbUrl)
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-func getTables(schema string) (map[string]bool, error) {
+func (f FoodDB) getTables(schema string) (map[string]bool, error) {
 	tables := map[string]bool{}
 
-	rows, err := db.Query(listTablesSql, schema)
+	rows, err := f.db.Query(listTablesSql, schema)
 	defer rows.Close()
 	if err != nil {
 		return tables, err
@@ -69,15 +72,15 @@ func getTables(schema string) (map[string]bool, error) {
 	return tables, nil
 }
 
-func listTables() {
-	tables, err := getTables("public")
+func (f FoodDB) listTables() {
+	tables, err := f.getTables("public")
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("tables:", tables)
 }
 
-func insertTestData() {
+func (f FoodDB) insertTestData() {
 	testData := map[string]int{
 		"pacal":    550,
 		"pancake":  400,
@@ -85,7 +88,7 @@ func insertTestData() {
 		"pizza":    1200,
 	}
 
-	insertStmt, err := db.Prepare(inserSql)
+	insertStmt, err := f.db.Prepare(inserSql)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -95,18 +98,18 @@ func insertTestData() {
 	}
 }
 
-func GetAllFoodList() []Food {
+func (f FoodDB) GetAllFoodList() []Food {
 	foodList := []Food{}
-	for _, f := range GetAllFoodMap() {
+	for _, f := range f.GetAllFoodMap() {
 		foodList = append(foodList, f)
 	}
 	return foodList
 }
 
-func GetAllFoodMap() map[string]Food {
+func (f FoodDB) GetAllFoodMap() map[string]Food {
 	foodMap := map[string]Food{}
 
-	rows, err := db.Query(listFoodSql)
+	rows, err := f.db.Query(listFoodSql)
 	defer rows.Close()
 	if err != nil {
 		log.Fatal(err)
@@ -124,9 +127,9 @@ func GetAllFoodMap() map[string]Food {
 	return foodMap
 }
 
-func createFoodTableIfNotExists() {
+func (f FoodDB) createFoodTableIfNotExists() {
 	schema, table := "public", "food"
-	tables, err := getTables(schema)
+	tables, err := f.getTables(schema)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -136,13 +139,13 @@ func createFoodTableIfNotExists() {
 
 	} else {
 		log.Println("missing table:", table)
-		_, err := db.Exec(createTableSql)
+		_, err := f.db.Exec(createTableSql)
 		if err != nil {
 			log.Fatal(err)
 		}
 		log.Println("create table SUCCESS:", table)
 		log.Println("inserting test data ...")
-		insertTestData()
+		f.insertTestData()
 	}
 }
 
@@ -152,8 +155,11 @@ func init() {
 	hostname, _ = os.Hostname()
 }
 
-func InitDb() {
-	openDB()
-	pingDB()
-	createFoodTableIfNotExists()
+func NewFoodDB() FoodDB {
+	f := FoodDB{}
+	f.openDB()
+	f.pingDB()
+	f.createFoodTableIfNotExists()
+
+	return f
 }

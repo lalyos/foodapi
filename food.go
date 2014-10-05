@@ -10,3 +10,7 @@ type Food struct {
 func (f Food) String() string {
 	return fmt.Sprintf("[name: %s, price:%d]", f.Name, f.Price)
 }
+
+type FoodRepo interface {
+	GetAllFoodList() []Food
+}

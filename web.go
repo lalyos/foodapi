@@ -8,8 +8,12 @@ import (
 	"runtime"
 )
 
-func foodListHandler(w http.ResponseWriter, req *http.Request) {
-	b, _ := json.Marshal(GetAllFoodList())
+type FoodWeb struct {
+	Repo FoodRepo
+}
+
+func (fw FoodWeb) foodListHandler(w http.ResponseWriter, req *http.Request) {
+	b, _ := json.Marshal(fw.Repo.GetAllFoodList())
 	w.Write(b)
 }
 
@@ -23,12 +27,11 @@ func infoHandler(w http.ResponseWriter, req *http.Request) {
 	io.WriteString(w, info)
 }
 
-func init() {
-	InitDb()
-}
+func NewDBBasedFoodWeb() {
+	fw := FoodWeb{}
+	fw.Repo = NewFoodDB()
 
-func StartWeb() {
-	http.HandleFunc("/food", foodListHandler)
+	http.HandleFunc("/food", fw.foodListHandler)
 	http.HandleFunc("/info", infoHandler)
 	http.ListenAndServe(":8080", nil)
 }
