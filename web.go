@@ -33,6 +33,12 @@ func infoHandler(w http.ResponseWriter, req *http.Request) {
 
 func NewDBBasedFoodWeb() {
 	dbUrl := os.Getenv("DBURL")
+	address := ":8080"
+
+	port := os.Getenv("PORT")
+	if port != "" {
+		address = fmt.Sprintf(":%s", port)
+	}
 	var repo FoodRepo
 
 	if dbUrl == "" {
@@ -51,6 +57,6 @@ func NewDBBasedFoodWeb() {
 
 	http.HandleFunc("/food", fw.foodListHandler)
 	http.HandleFunc("/info", infoHandler)
-	http.ListenAndServe(":8080", nil)
 	log.Println("[web] starting server at:", address)
+	http.ListenAndServe(address, nil)
 }
