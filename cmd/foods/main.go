@@ -2,11 +2,13 @@ package main
 
 import (
 	"fmt"
+	"os"
 
-	"github.com/lalyos/gofood"
+	"github.com/lalyos/gofood/gofood"
 )
 
 func main() {
-	gofood.InitDb()
-	fmt.Println(gofood.GetAllFoodList())
+	dbUrl := os.Getenv("DBURL")
+	repo := gofood.NewFoodDB(dbUrl)
+	fmt.Println(repo.GetAllFoodList())
 }
