@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 	"runtime"
 )
 
@@ -28,8 +29,15 @@ func infoHandler(w http.ResponseWriter, req *http.Request) {
 }
 
 func NewDBBasedFoodWeb() {
-	fw := FoodWeb{}
-	fw.Repo = NewFoodDB()
+	dbUrl := os.Getenv("DBURL")
+	if dbUrl == "" {
+		panic("Please set the DBURL env variable: postgres://user:pwd@host/dbname?sslmode=disable")
+	}
+	repo := NewFoodDB(dbUrl)
+
+	fw := FoodWeb{
+		Repo: repo,
+	}
 
 	http.HandleFunc("/food", fw.foodListHandler)
 	http.HandleFunc("/info", infoHandler)

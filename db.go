@@ -13,7 +13,8 @@ var err error
 var hostname string
 
 type FoodDB struct {
-	db *sql.DB
+	dbUrl string
+	db    *sql.DB
 }
 
 const version = "1.0"
@@ -42,12 +43,7 @@ func (f FoodDB) pingDB() {
 }
 
 func (f *FoodDB) openDB() {
-	dbUrl := os.Getenv("DBURL")
-	if dbUrl == "" {
-		panic("Please set the DBURL env variable: postgres://user:pwd@host/dbname?sslmode=disable")
-	}
-
-	f.db, err = sql.Open("postgres", dbUrl)
+	f.db, err = sql.Open("postgres", f.dbUrl)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -155,8 +151,10 @@ func init() {
 	hostname, _ = os.Hostname()
 }
 
-func NewFoodDB() FoodDB {
-	f := FoodDB{}
+func NewFoodDB(url string) FoodDB {
+	f := FoodDB{
+		dbUrl: url,
+	}
 	f.openDB()
 	f.pingDB()
 	f.createFoodTableIfNotExists()
