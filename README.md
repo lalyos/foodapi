@@ -1,3 +1,5 @@
+# Foodapi [![Build Status](https://drone.io/github.com/lalyos/foodapi/status.png)](https://drone.io/github.com/lalyos/foodapi/latest)
+
 This is a small webapp which can be used as a `microserice`. It is an imaginary
 food list REST api.
 
