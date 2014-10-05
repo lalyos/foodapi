@@ -6,7 +6,7 @@ import (
 	"github.com/lalyos/gofood"
 )
 
-func _main() {
+func main() {
 	gofood.InitDb()
 	fmt.Println(gofood.GetAllFoodList())
 }
