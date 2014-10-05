@@ -6,5 +6,7 @@ deploy:
   api_key:
     secure: 1sHD4cMNb+llPyCUDQC2hIk0r8QCqiRcNYMvBtXMbXQpUs8oG/J0gZpp0NLsZ3SMMktjLb5oxLD84BP8JSipbvQ/VvfmtAtv08LRJ+IMAd+9Qbg7I1Vd7CeiqVQ7Acb2ljpvRhGfmJ6oddCsBboD8cnaC9CjN3UqlBaHm/9nvJo=
   file: foodapi
+  skip_cleanup: true
   on:
+    tags: true
     repo: lalyos/foodapi
