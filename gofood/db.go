@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"net/url"
 	"os"
 
 	_ "github.com/lib/pq"
@@ -42,8 +43,13 @@ func (f FoodDB) pingDB() {
 	}
 }
 
+func removeAuthInfo(dburl string) string {
+	u, _ := url.Parse(dburl)
+	return u.Scheme + "://" + u.Host + u.Path + "?" + u.RawQuery
+}
+
 func (f *FoodDB) openDB() {
-	log.Println("[INFO] connecting to:", f.dbUrl)
+	log.Println("[INFO] connecting to", removeAuthInfo(f.dbUrl))
 	f.db, err = sql.Open("postgres", f.dbUrl)
 	if err != nil {
 		log.Fatal(err)
