@@ -1,6 +1,6 @@
 package main
 
-import "github.com/lalyos/gofood/gofood"
+import "github.com/lalyos/foodapi/gofood"
 
 func main() {
 	gofood.NewDBBasedFoodWeb()

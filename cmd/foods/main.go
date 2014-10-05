@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/lalyos/gofood/gofood"
+	"github.com/lalyos/foodapi/gofood"
 )
 
 func main() {
