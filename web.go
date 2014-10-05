@@ -30,10 +30,14 @@ func infoHandler(w http.ResponseWriter, req *http.Request) {
 
 func NewDBBasedFoodWeb() {
 	dbUrl := os.Getenv("DBURL")
+	var repo FoodRepo
+
 	if dbUrl == "" {
-		panic("Please set the DBURL env variable: postgres://user:pwd@host/dbname?sslmode=disable")
+		//panic("Please set the DBURL env variable: postgres://user:pwd@host/dbname?sslmode=disable")
+		repo = NewDummyFoodRepo()
+	} else {
+		repo = NewFoodDB(dbUrl)
 	}
-	repo := NewFoodDB(dbUrl)
 
 	fw := FoodWeb{
 		Repo: repo,
