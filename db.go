@@ -43,6 +43,7 @@ func (f FoodDB) pingDB() {
 }
 
 func (f *FoodDB) openDB() {
+	log.Println("[INFO] connecting to:", f.dbUrl)
 	f.db, err = sql.Open("postgres", f.dbUrl)
 	if err != nil {
 		log.Fatal(err)

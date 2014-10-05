@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"runtime"
@@ -14,11 +15,13 @@ type FoodWeb struct {
 }
 
 func (fw FoodWeb) foodListHandler(w http.ResponseWriter, req *http.Request) {
+	log.Println("[web] foodListHadler")
 	b, _ := json.Marshal(fw.Repo.GetAllFoodList())
 	w.Write(b)
 }
 
 func infoHandler(w http.ResponseWriter, req *http.Request) {
+	log.Println("[web] infoHandler")
 	info := fmt.Sprintf(`{"host": "%s", "version": "%s", "os":"%s", "arch":"%s" }`,
 		hostname,
 		version,
@@ -33,8 +36,11 @@ func NewDBBasedFoodWeb() {
 	var repo FoodRepo
 
 	if dbUrl == "" {
-		//panic("Please set the DBURL env variable: postgres://user:pwd@host/dbname?sslmode=disable")
 		repo = NewDummyFoodRepo()
+		log.Println("[WARNING] DBURL env variable is unset, in memory repo is used")
+		log.Println("[WARNING] to use postgress as backend:")
+		log.Println("[WARNING]")
+		log.Println("[WARNING]    export DBURL=postgres://user:pwd@host/dbname?sslmode=disable")
 	} else {
 		repo = NewFoodDB(dbUrl)
 	}
@@ -46,4 +52,5 @@ func NewDBBasedFoodWeb() {
 	http.HandleFunc("/food", fw.foodListHandler)
 	http.HandleFunc("/info", infoHandler)
 	http.ListenAndServe(":8080", nil)
+	log.Println("[web] starting server at:", address)
 }
