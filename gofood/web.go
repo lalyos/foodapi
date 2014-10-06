@@ -22,6 +22,16 @@ func (fw FoodWeb) foodListHandler(w http.ResponseWriter, req *http.Request) {
 	w.Write(b)
 }
 
+func (fw FoodWeb) getFoodHandler(w http.ResponseWriter, req *http.Request) {
+	log.Println("[web] getFoodHandler")
+	vars := mux.Vars(req)
+	foodName := vars["food"]
+
+	f, _ := fw.Repo.GetFood(foodName)
+	b, _ := json.Marshal(f)
+	w.Write(b)
+}
+
 func (fw FoodWeb) addFoodHandler(w http.ResponseWriter, req *http.Request) {
 	log.Println("[web] addFoodHandler")
 
@@ -72,6 +82,7 @@ func NewDBBasedFoodWeb() {
 
 	r := mux.NewRouter()
 	r.HandleFunc("/food", fw.foodListHandler).Methods("GET")
+	r.HandleFunc("/food/{food}", fw.getFoodHandler).Methods("GET")
 	r.HandleFunc("/food", fw.addFoodHandler).Methods("POST")
 	r.HandleFunc("/info", infoHandler)
 	log.Println("[web] starting server at:", address)
