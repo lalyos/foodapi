@@ -106,6 +106,12 @@ func (f FoodDB) insertTestData() {
 }
 
 func (f FoodDB) Add(food Food) {
+	_, exists := f.Get(food.Name)
+	if exists {
+		log.Println("food already exists:", food.Name)
+		return
+	}
+
 	insertStmt, err := f.db.Prepare(inserSql)
 	if err != nil {
 		log.Fatal(err)
