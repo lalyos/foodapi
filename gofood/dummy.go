@@ -18,6 +18,11 @@ func (r *InMemoryFoodRepo) DeleteFood(name string) {
 	delete(*r, name)
 }
 
+func (r *InMemoryFoodRepo) GetFood(name string) (Food, bool) {
+	f, ok := (*r)[name]
+	return f, ok
+}
+
 func NewDummyFoodRepo() *InMemoryFoodRepo {
 
 	r := InMemoryFoodRepo{}

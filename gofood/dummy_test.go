@@ -28,6 +28,19 @@ func TestAddFood(t *testing.T) {
 	}
 }
 
+func TestGetFood(t *testing.T) {
+	repo := NewDummyFoodRepo()
+	f, ok := repo.GetFood("pizza")
+
+	if !ok {
+		t.Error("GetFood should return a valid object")
+	}
+
+	if f.Price != 1200 {
+		t.Error("GetFood should return a food with known price")
+	}
+}
+
 func TestDeleteFood(t *testing.T) {
 	repo := NewDummyFoodRepo()
 	beforeLen := len(repo.GetAllFoodList())

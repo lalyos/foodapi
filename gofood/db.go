@@ -109,6 +109,11 @@ func (f FoodDB) DeleteFood(name string) {
 	log.Println("TODO")
 }
 
+func (f FoodDB) GetFood(name string) (Food, bool) {
+	log.Println("TODO")
+	return Food{}, false
+}
+
 func (f FoodDB) GetAllFoodList() []Food {
 	foodList := []Food{}
 	for _, f := range f.GetAllFoodMap() {

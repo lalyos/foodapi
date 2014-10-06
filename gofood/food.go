@@ -12,6 +12,7 @@ func (f Food) String() string {
 }
 
 type FoodRepo interface {
+	GetFood(name string) (Food, bool)
 	GetAllFoodList() []Food
 	AddFood(food Food)
 	DeleteFood(name string)
