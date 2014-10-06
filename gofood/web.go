@@ -27,7 +27,7 @@ func (fw FoodWeb) getFoodHandler(w http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
 	foodName := vars["food"]
 
-	f, ok := fw.Repo.GetFood(foodName)
+	f, ok := fw.Repo.Get(foodName)
 	var b []byte
 	if ok {
 		b, _ = json.Marshal(f)
@@ -42,7 +42,7 @@ func (fw FoodWeb) deleteFoodHandler(w http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
 	foodName := vars["food"]
 
-	fw.Repo.DeleteFood(foodName)
+	fw.Repo.Delete(foodName)
 	fmt.Fprintf(w, "DELETED %v", foodName)
 }
 
@@ -55,7 +55,7 @@ func (fw FoodWeb) addFoodHandler(w http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		log.Println("[WARNING] couldnt add food:", err)
 	}
-	fw.Repo.AddFood(f)
+	fw.Repo.Add(f)
 	fmt.Fprintf(w, "OK %v", f)
 }
 
@@ -69,7 +69,7 @@ func (fw FoodWeb) updateFoodHandler(w http.ResponseWriter, req *http.Request) {
 		log.Println("[WARNING] couldnt add food:", err)
 	}
 
-	ok := fw.Repo.UpdateFood(f)
+	ok := fw.Repo.Update(f)
 	if ok {
 		fmt.Fprintf(w, "UPDATED %v", f.Name)
 	} else {

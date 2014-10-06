@@ -101,20 +101,20 @@ func (f FoodDB) insertTestData() {
 	}
 }
 
-func (f FoodDB) AddFood(food Food) {
+func (f FoodDB) Add(food Food) {
 	log.Println("TODO")
 }
 
-func (f FoodDB) DeleteFood(name string) {
+func (f FoodDB) Delete(name string) {
 	log.Println("TODO")
 }
 
-func (f FoodDB) GetFood(name string) (Food, bool) {
+func (f FoodDB) Get(name string) (Food, bool) {
 	log.Println("TODO")
 	return Food{}, false
 }
 
-func (f FoodDB) UpdateFood(food Food) bool {
+func (f FoodDB) Update(food Food) bool {
 	log.Println("TODO")
 	return false
 }

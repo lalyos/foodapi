@@ -17,10 +17,10 @@ func getDummyFood() Food {
 	}
 }
 
-func TestAddFood(t *testing.T) {
+func TestAdd(t *testing.T) {
 	repo := NewDummyFoodRepo()
 	beforeLen := len(repo.GetAllFoodList())
-	repo.AddFood(getDummyFood())
+	repo.Add(getDummyFood())
 
 	afterLen := len(repo.GetAllFoodList())
 	if (afterLen - beforeLen) != 1 {
@@ -28,23 +28,23 @@ func TestAddFood(t *testing.T) {
 	}
 }
 
-func TestUpdateFood(t *testing.T) {
+func TestUpdate(t *testing.T) {
 	repo := NewDummyFoodRepo()
 	expensivePizza := Food{
 		Name:  "pizza",
 		Price: 9999,
 	}
-	repo.UpdateFood(expensivePizza)
-	f, _ := repo.GetFood("pizza")
+	repo.Update(expensivePizza)
+	f, _ := repo.Get("pizza")
 
 	if f.Price != 9999 {
 		t.Error("GetFood should return a food with known price")
 	}
 }
 
-func TestGetFood(t *testing.T) {
+func TestGet(t *testing.T) {
 	repo := NewDummyFoodRepo()
-	f, ok := repo.GetFood("pizza")
+	f, ok := repo.Get("pizza")
 
 	if !ok {
 		t.Error("GetFood should return a valid object")
@@ -55,10 +55,10 @@ func TestGetFood(t *testing.T) {
 	}
 }
 
-func TestDeleteFood(t *testing.T) {
+func TestDelete(t *testing.T) {
 	repo := NewDummyFoodRepo()
 	beforeLen := len(repo.GetAllFoodList())
-	repo.DeleteFood("pizza")
+	repo.Delete("pizza")
 
 	afterLen := len(repo.GetAllFoodList())
 	if (beforeLen - afterLen) != 1 {
@@ -70,14 +70,14 @@ func TestAddFoodTwice(t *testing.T) {
 	repo := NewDummyFoodRepo()
 	beforeLen := len(repo.GetAllFoodList())
 
-	repo.AddFood(getDummyFood())
+	repo.Add(getDummyFood())
 	afterAddLen := len(repo.GetAllFoodList())
 
 	if (afterAddLen - beforeLen) != 1 {
 		t.Error("Add should increase length by 1")
 	}
 
-	repo.AddFood(getDummyFood())
+	repo.Add(getDummyFood())
 	afterSecondAddLen := len(repo.GetAllFoodList())
 
 	if (afterSecondAddLen - afterAddLen) != 0 {
