@@ -10,20 +10,40 @@ func TestConstructor(t *testing.T) {
 	}
 }
 
-func TestAddFood(t *testing.T) {
-	repo := NewDummyFoodRepo()
-	beforeLen := len(repo.GetAllFoodList())
-	t.Log("beforeLen", beforeLen)
-	f := Food{
+func getDummyFood() Food {
+	return Food{
 		Name:  "newDummyFood",
 		Price: 400,
 	}
-	repo.AddFood(f)
+}
+
+func TestAddFood(t *testing.T) {
+	repo := NewDummyFoodRepo()
+	beforeLen := len(repo.GetAllFoodList())
+	repo.AddFood(getDummyFood())
 
 	afterLen := len(repo.GetAllFoodList())
-	t.Log("afterLen", afterLen)
 	if (afterLen - beforeLen) != 1 {
 		t.Error("Add should increase length by 1")
+	}
+}
+
+func TestAddFoodTwice(t *testing.T) {
+	repo := NewDummyFoodRepo()
+	beforeLen := len(repo.GetAllFoodList())
+
+	repo.AddFood(getDummyFood())
+	afterAddLen := len(repo.GetAllFoodList())
+
+	if (afterAddLen - beforeLen) != 1 {
+		t.Error("Add should increase length by 1")
+	}
+
+	repo.AddFood(getDummyFood())
+	afterSecondAddLen := len(repo.GetAllFoodList())
+
+	if (afterSecondAddLen - afterAddLen) != 0 {
+		t.Error("Second Add should NOT increase the length")
 	}
 
 }
