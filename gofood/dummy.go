@@ -1,36 +1,26 @@
 package gofood
 
-type InMemoryFoodRepo []Food
+type InMemoryFoodRepo map[string]Food
 
 func (r *InMemoryFoodRepo) GetAllFoodList() []Food {
-	return *r
+	list := make([]Food, 0, len(*r))
+	for _, value := range *r {
+		list = append(list, value)
+	}
+	return list
 }
 
 func (r *InMemoryFoodRepo) AddFood(food Food) {
-	*r = append(*r, food)
+	(*r)[food.Name] = food
 }
 
 func NewDummyFoodRepo() *InMemoryFoodRepo {
 
-	mylist := []Food{
-		// Food{
-		// 	Name:  "pacal",
-		// 	Price: 550,
-		// },
-		Food{
-			Name:  "pancake",
-			Price: 400,
-		},
-		Food{
-			Name:  "tortilla",
-			Price: 1400,
-		},
-		Food{
-			Name:  "pizza",
-			Price: 1200,
-		},
-	}
+	r := InMemoryFoodRepo{}
 
-	r := InMemoryFoodRepo(mylist)
+	r.AddFood(Food{Name: "pancake", Price: 400})
+	r.AddFood(Food{Name: "tortilla", Price: 1400})
+	r.AddFood(Food{Name: "pizza", Price: 1200})
+
 	return &r
 }
