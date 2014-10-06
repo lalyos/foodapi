@@ -34,7 +34,7 @@ will be used.
 
 The webapp looks for the postgres url under the `DBURL` env variable:
 ```
-export DBURL="postgres://postgres:@$(docker inspect -f "{{.NetworkSettings.IPAddress}}" gofood-psql)/postgres?sslmode=disable"
+export DBURL="postgres://postgres:@$(docker inspect -f "{{.NetworkSettings.IPAddress}}" food-psql)/postgres?sslmode=disable"
 ```
 
 ## psql in cli
