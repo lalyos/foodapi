@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/url"
 	"os"
+	"strconv"
 
 	_ "github.com/lib/pq"
 )
@@ -35,6 +36,7 @@ const listTablesSql = `
 
 const inserSql = "INSERT into food VALUES ($1, $2)"
 const listFoodSql = "SELECT * from food;"
+const findByNameSql = "SELECT name,price from food WHERE name=$1;"
 
 func (f FoodDB) pingDB() {
 	err = f.db.Ping()
@@ -102,7 +104,12 @@ func (f FoodDB) insertTestData() {
 }
 
 func (f FoodDB) Add(food Food) {
-	log.Println("TODO")
+	insertStmt, err := f.db.Prepare(inserSql)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	insertStmt.Exec(food.Name, food.Price)
 }
 
 func (f FoodDB) Delete(name string) {
