@@ -27,8 +27,13 @@ func (fw FoodWeb) getFoodHandler(w http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
 	foodName := vars["food"]
 
-	f, _ := fw.Repo.GetFood(foodName)
-	b, _ := json.Marshal(f)
+	f, ok := fw.Repo.GetFood(foodName)
+	var b []byte
+	if ok {
+		b, _ = json.Marshal(f)
+	} else {
+		b = []byte(`{"message": "NotFound"}`)
+	}
 	w.Write(b)
 }
 
