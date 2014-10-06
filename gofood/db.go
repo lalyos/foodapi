@@ -110,8 +110,20 @@ func (f FoodDB) Delete(name string) {
 }
 
 func (f FoodDB) Get(name string) (Food, bool) {
-	log.Println("TODO")
-	return Food{}, false
+	var foodName, foodPrice string
+	err := f.db.QueryRow(findByNameSql, name).Scan(&foodName, &foodPrice)
+	if err != nil {
+		log.Println("SQL error", err)
+		return Food{}, false
+	}
+
+	price, err := strconv.ParseInt(foodPrice, 10, 0)
+	if err != nil {
+		log.Println("couldnt pare price:", foodPrice, err)
+		return Food{}, false
+	}
+
+	return Food{Name: foodName, Price: int(price)}, true
 }
 
 func (f FoodDB) Update(food Food) bool {
