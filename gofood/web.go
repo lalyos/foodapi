@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"os"
 	"runtime"
+
+	"github.com/gorilla/mux"
 )
 
 type FoodWeb struct {
@@ -55,8 +57,10 @@ func NewDBBasedFoodWeb() {
 		Repo: repo,
 	}
 
-	http.HandleFunc("/food", fw.foodListHandler)
-	http.HandleFunc("/info", infoHandler)
+	r := mux.NewRouter()
+	r.HandleFunc("/food", fw.foodListHandler).Methods("GET")
+	r.HandleFunc("/info", infoHandler)
 	log.Println("[web] starting server at:", address)
+	http.Handle("/", r)
 	http.ListenAndServe(address, nil)
 }
