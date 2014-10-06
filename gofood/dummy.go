@@ -14,6 +14,10 @@ func (r *InMemoryFoodRepo) AddFood(food Food) {
 	(*r)[food.Name] = food
 }
 
+func (r *InMemoryFoodRepo) DeleteFood(name string) {
+	delete(*r, name)
+}
+
 func NewDummyFoodRepo() *InMemoryFoodRepo {
 
 	r := InMemoryFoodRepo{}

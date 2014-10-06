@@ -102,7 +102,11 @@ func (f FoodDB) insertTestData() {
 }
 
 func (f FoodDB) AddFood(food Food) {
+	log.Println("TODO")
+}
 
+func (f FoodDB) DeleteFood(name string) {
+	log.Println("TODO")
 }
 
 func (f FoodDB) GetAllFoodList() []Food {

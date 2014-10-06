@@ -28,6 +28,17 @@ func TestAddFood(t *testing.T) {
 	}
 }
 
+func TestDeleteFood(t *testing.T) {
+	repo := NewDummyFoodRepo()
+	beforeLen := len(repo.GetAllFoodList())
+	repo.DeleteFood("pizza")
+
+	afterLen := len(repo.GetAllFoodList())
+	if (beforeLen - afterLen) != 1 {
+		t.Error("Delete should decrease length by 1")
+	}
+}
+
 func TestAddFoodTwice(t *testing.T) {
 	repo := NewDummyFoodRepo()
 	beforeLen := len(repo.GetAllFoodList())
@@ -45,5 +56,4 @@ func TestAddFoodTwice(t *testing.T) {
 	if (afterSecondAddLen - afterAddLen) != 0 {
 		t.Error("Second Add should NOT increase the length")
 	}
-
 }
