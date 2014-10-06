@@ -31,6 +31,7 @@ func (fw FoodWeb) addFoodHandler(w http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		log.Println("[WARNING] couldnt add food:", err)
 	}
+	fw.Repo.AddFood(f)
 	fmt.Fprintf(w, "OK %v", f)
 }
 
