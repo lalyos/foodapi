@@ -13,4 +13,5 @@ func (f Food) String() string {
 
 type FoodRepo interface {
 	GetAllFoodList() []Food
+	AddFood(food Food)
 }

@@ -101,6 +101,10 @@ func (f FoodDB) insertTestData() {
 	}
 }
 
+func (f FoodDB) AddFood(food Food) {
+
+}
+
 func (f FoodDB) GetAllFoodList() []Food {
 	foodList := []Food{}
 	for _, f := range f.GetAllFoodMap() {

@@ -1,11 +1,15 @@
 package gofood
 
 type InMemoryFoodRepo struct {
-	list []Food
+	list *[]Food
 }
 
 func (r InMemoryFoodRepo) GetAllFoodList() []Food {
-	return r.list
+	return *r.list
+}
+
+func (r InMemoryFoodRepo) AddFood(food Food) {
+	*r.list = append(*r.list, food)
 }
 
 func NewDummyFoodRepo() InMemoryFoodRepo {
@@ -30,6 +34,6 @@ func NewDummyFoodRepo() InMemoryFoodRepo {
 	}
 
 	return InMemoryFoodRepo{
-		list: mylist,
+		list: &mylist,
 	}
 }
