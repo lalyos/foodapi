@@ -22,7 +22,7 @@ type FoodDB struct {
 const version = "1.0"
 const createTableSql = `
   CREATE TABLE food (
-    name    varchar(40) NOT NULL,
+    name    varchar(40) PRIMARY KEY,
     price       integer NOT NULL
   );
 `
