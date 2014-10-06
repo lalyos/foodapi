@@ -162,7 +162,7 @@ func init() {
 	hostname, _ = os.Hostname()
 }
 
-func NewFoodDB(url string) FoodDB {
+func NewFoodDB(url string) *FoodDB {
 	f := FoodDB{
 		dbUrl: url,
 	}
@@ -170,5 +170,5 @@ func NewFoodDB(url string) FoodDB {
 	f.pingDB()
 	f.createFoodTableIfNotExists()
 
-	return f
+	return &f
 }
