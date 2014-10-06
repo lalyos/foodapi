@@ -59,6 +59,25 @@ func (fw FoodWeb) addFoodHandler(w http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(w, "OK %v", f)
 }
 
+func (fw FoodWeb) updateFoodHandler(w http.ResponseWriter, req *http.Request) {
+	log.Println("[web] updateFoodHandler")
+
+	decoder := json.NewDecoder(req.Body)
+	var f Food
+	err := decoder.Decode(&f)
+	if err != nil {
+		log.Println("[WARNING] couldnt add food:", err)
+	}
+
+	ok := fw.Repo.UpdateFood(f)
+	if ok {
+		fmt.Fprintf(w, "UPDATED %v", f.Name)
+	} else {
+		fmt.Fprintf(w, "Not Found ")
+	}
+
+}
+
 func infoHandler(w http.ResponseWriter, req *http.Request) {
 	log.Println("[web] infoHandler")
 	info := fmt.Sprintf(`{"host": "%s", "version": "%s", "os":"%s", "arch":"%s" }`,
@@ -98,6 +117,7 @@ func NewDBBasedFoodWeb() {
 	r.HandleFunc("/food", fw.foodListHandler).Methods("GET")
 	r.HandleFunc("/food/{food}", fw.getFoodHandler).Methods("GET")
 	r.HandleFunc("/food/{food}", fw.deleteFoodHandler).Methods("DELETE")
+	r.HandleFunc("/food/{food}", fw.updateFoodHandler).Methods("PUT")
 	r.HandleFunc("/food", fw.addFoodHandler).Methods("POST")
 	r.HandleFunc("/info", infoHandler)
 	log.Println("[web] starting server at:", address)
