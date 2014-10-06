@@ -16,4 +16,5 @@ type FoodRepo interface {
 	GetAllFoodList() []Food
 	AddFood(food Food)
 	DeleteFood(name string)
+	UpdateFood(food Food) bool
 }

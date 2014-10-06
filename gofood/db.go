@@ -114,6 +114,11 @@ func (f FoodDB) GetFood(name string) (Food, bool) {
 	return Food{}, false
 }
 
+func (f FoodDB) UpdateFood(food Food) bool {
+	log.Println("TODO")
+	return false
+}
+
 func (f FoodDB) GetAllFoodList() []Food {
 	foodList := []Food{}
 	for _, f := range f.GetAllFoodMap() {

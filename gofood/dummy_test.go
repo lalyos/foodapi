@@ -28,6 +28,20 @@ func TestAddFood(t *testing.T) {
 	}
 }
 
+func TestUpdateFood(t *testing.T) {
+	repo := NewDummyFoodRepo()
+	expensivePizza := Food{
+		Name:  "pizza",
+		Price: 9999,
+	}
+	repo.UpdateFood(expensivePizza)
+	f, _ := repo.GetFood("pizza")
+
+	if f.Price != 9999 {
+		t.Error("GetFood should return a food with known price")
+	}
+}
+
 func TestGetFood(t *testing.T) {
 	repo := NewDummyFoodRepo()
 	f, ok := repo.GetFood("pizza")

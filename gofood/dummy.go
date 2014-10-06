@@ -23,6 +23,16 @@ func (r *InMemoryFoodRepo) GetFood(name string) (Food, bool) {
 	return f, ok
 }
 
+func (r *InMemoryFoodRepo) UpdateFood(food Food) bool {
+	_, ok := (*r)[food.Name]
+	if !ok {
+		return false
+	}
+
+	(*r)[food.Name] = food
+	return true
+}
+
 func NewDummyFoodRepo() *InMemoryFoodRepo {
 
 	r := InMemoryFoodRepo{}
