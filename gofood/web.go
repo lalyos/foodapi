@@ -32,6 +32,15 @@ func (fw FoodWeb) getFoodHandler(w http.ResponseWriter, req *http.Request) {
 	w.Write(b)
 }
 
+func (fw FoodWeb) deleteFoodHandler(w http.ResponseWriter, req *http.Request) {
+	log.Println("[web] deleteFoodHandler")
+	vars := mux.Vars(req)
+	foodName := vars["food"]
+
+	fw.Repo.DeleteFood(foodName)
+	fmt.Fprintf(w, "DELETED %v", foodName)
+}
+
 func (fw FoodWeb) addFoodHandler(w http.ResponseWriter, req *http.Request) {
 	log.Println("[web] addFoodHandler")
 
@@ -83,6 +92,7 @@ func NewDBBasedFoodWeb() {
 	r := mux.NewRouter()
 	r.HandleFunc("/food", fw.foodListHandler).Methods("GET")
 	r.HandleFunc("/food/{food}", fw.getFoodHandler).Methods("GET")
+	r.HandleFunc("/food/{food}", fw.deleteFoodHandler).Methods("DELETE")
 	r.HandleFunc("/food", fw.addFoodHandler).Methods("POST")
 	r.HandleFunc("/info", infoHandler)
 	log.Println("[web] starting server at:", address)
