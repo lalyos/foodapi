@@ -35,6 +35,7 @@ const listTablesSql = `
 `
 
 const inserSql = "INSERT into food VALUES ($1, $2)"
+const updateSql = "UPDATE food set (price) = ($2) WHERE name=$1"
 const listFoodSql = "SELECT * from food;"
 const findByNameSql = "SELECT name,price from food WHERE name=$1;"
 
@@ -134,8 +135,15 @@ func (f FoodDB) Get(name string) (Food, bool) {
 }
 
 func (f FoodDB) Update(food Food) bool {
-	log.Println("TODO")
-	return false
+	insertStmt, err := f.db.Prepare(updateSql)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	res, err := insertStmt.Exec(food.Name, food.Price)
+	rows, _ := res.RowsAffected()
+	log.Println("affected lines:", rows)
+	return err == nil
 }
 
 func (f FoodDB) GetAllFoodList() []Food {
