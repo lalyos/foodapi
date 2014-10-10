@@ -48,7 +48,13 @@ docker run -it --rm \
 ```
 ## Heroku
 
+Create golang heroku app
 ```
 heroku apps:create -b https://github.com/kr/heroku-buildpack-go.git --region eu myfoodapi
 git push heroku master
+```
+
+Add postgres
+```
+heroku addons:add heroku-postgresql
 ```
