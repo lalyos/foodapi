@@ -90,7 +90,7 @@ func infoHandler(w http.ResponseWriter, req *http.Request) {
 }
 
 func NewDBBasedFoodWeb() {
-	dbUrl := os.Getenv("DBURL")
+	dbUrl := os.Getenv("DATABASE_URL")
 	address := ":8080"
 
 	port := os.Getenv("PORT")
@@ -101,10 +101,10 @@ func NewDBBasedFoodWeb() {
 
 	if dbUrl == "" {
 		repo = NewDummyFoodRepo()
-		log.Println("[WARNING] DBURL env variable is unset, in memory repo is used")
+		log.Println("[WARNING] DATABASE_URL env variable is unset, in memory repo is used")
 		log.Println("[WARNING] to use postgress as backend:")
 		log.Println("[WARNING]")
-		log.Println("[WARNING]    export DBURL=postgres://user:pwd@host/dbname?sslmode=disable")
+		log.Println("[WARNING]    export DATABASE_URL=postgres://user:pwd@host/dbname?sslmode=disable")
 	} else {
 		repo = NewFoodDB(dbUrl)
 	}

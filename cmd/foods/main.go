@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	dbUrl := os.Getenv("DBURL")
+	dbUrl := os.Getenv("DATABASE_URL")
 	repo := gofood.NewFoodDB(dbUrl)
 	fmt.Println(repo.GetAllFoodList())
 }

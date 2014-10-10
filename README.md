@@ -32,9 +32,9 @@ will be used.
 
 ## DB url manually
 
-The webapp looks for the postgres url under the `DBURL` env variable:
+The webapp looks for the postgres url under the `DATABASE_URL` env variable:
 ```
-export DBURL="postgres://postgres:@$(docker inspect -f "{{.NetworkSettings.IPAddress}}" food-psql)/postgres?sslmode=disable"
+export DATABASE_URL="postgres://postgres:@$(docker inspect -f "{{.NetworkSettings.IPAddress}}" food-psql)/postgres?sslmode=disable"
 ```
 
 ## psql in cli
