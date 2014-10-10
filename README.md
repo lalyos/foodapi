@@ -46,3 +46,9 @@ docker run -it --rm \
   postgres \
   sh -c 'psql -h $DB_PORT_5432_TCP_ADDR -U postgres postgres'
 ```
+## Heroku
+
+```
+heroku apps:create -b https://github.com/kr/heroku-buildpack-go.git --region eu myfoodapi
+git push heroku master
+```
