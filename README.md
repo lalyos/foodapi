@@ -12,6 +12,8 @@ docker run --name food-psql -d postgres
 
 ## Start the webapp
 
+
+
 The easiest way is to start the webapp in docker. You need to link the postgres
 container:
 
@@ -57,4 +59,9 @@ git push heroku master
 Add postgres
 ```
 heroku addons:add heroku-postgresql
+```
+
+Connecting to psql on heroku
+```
+heroku pg:psql
 ```

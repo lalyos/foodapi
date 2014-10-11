@@ -34,7 +34,7 @@ const listTablesSql = `
     ORDER BY table_name;
 `
 
-const inserSql = "INSERT into food VALUES ($1, $2)"
+const inserSql = "INSERT INTO food (name, price) VALUES ($1, $2)"
 const updateSql = "UPDATE food set (price) = ($2) WHERE name=$1"
 const deleteSql = "DELETE FROM food WHERE name=$1"
 const listFoodSql = "SELECT * from food;"
@@ -112,12 +112,11 @@ func (f FoodDB) Add(food Food) {
 		return
 	}
 
-	insertStmt, err := f.db.Prepare(inserSql)
+	_, err = f.db.Exec(food.Name, food.Price)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
-	insertStmt.Exec(food.Name, food.Price)
 }
 
 func (f FoodDB) Delete(name string) {
