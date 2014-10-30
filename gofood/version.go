@@ -1,0 +1,3 @@
+package gofood
+
+const version = "0.0.5"

@@ -19,7 +19,6 @@ type FoodDB struct {
 	db    *sql.DB
 }
 
-const version = "1.0"
 const createTableSql = `
   CREATE TABLE food (
     name    varchar(40) PRIMARY KEY,
