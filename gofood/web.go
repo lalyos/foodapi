@@ -82,7 +82,7 @@ func infoHandler(w http.ResponseWriter, req *http.Request) {
 	log.Println("[web] infoHandler")
 	info := fmt.Sprintf(`{"host": "%s", "version": "%s", "os":"%s", "arch":"%s" }`,
 		hostname,
-		version,
+		Version,
 		runtime.GOOS,
 		runtime.GOARCH,
 	)
