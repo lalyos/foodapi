@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	if strings.HasSuffix(os.Args[1], "version") {
+	if len(os.Args) > 1 && strings.HasSuffix(os.Args[1], "version") {
 		fmt.Println(gofood.Version)
 		return
 	}
