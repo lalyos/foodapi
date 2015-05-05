@@ -18,7 +18,7 @@ The easiest way is to start the webapp in docker. You need to link the postgres
 container:
 
 ```
-docker run -d --name foodweb --link food-psql:db food
+docker run -d -P --name foodweb --link food-psql:db food
 ```
 
 ## Configuration
@@ -64,4 +64,10 @@ heroku addons:add heroku-postgresql
 Connecting to psql on heroku
 ```
 heroku pg:psql
+```
+
+## Build docker images
+
+```
+GOOS=linux go build && docker build -t food .
 ```
